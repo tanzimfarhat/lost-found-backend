@@ -31,7 +31,7 @@ public class ClaimController {
         return claimService.getAllClaims();
     }
 
-    // Track a claim using its tracking code
+    // Track a claim using its tracking 
     @GetMapping("/track/{code}")
     public Claim trackClaim(@PathVariable String code) {
         return claimService.trackClaim(code);
