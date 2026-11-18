@@ -16,5 +16,5 @@ public class AuthResponse {
     public void setToken(String token) {
         this.token = token;
     }
-    // By alif
+    
 }
