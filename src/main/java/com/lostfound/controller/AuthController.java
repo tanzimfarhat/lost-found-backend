@@ -55,5 +55,5 @@ public class AuthController {
         user.getRoles().add("USER");
         return userRepository.save(user);
     }
-    // By alif
+    
 }

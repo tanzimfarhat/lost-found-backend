@@ -51,5 +51,5 @@ public class ClaimController {
     public Claim rejectClaim(@PathVariable Long id) {
         return claimService.rejectClaim(id);
     }
-    // By alif
+    
 }
