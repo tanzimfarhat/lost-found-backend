@@ -1,9 +1,7 @@
-
 package com.lostfound.controller;
 
 import com.lostfound.entity.Claim;
 import com.lostfound.service.ClaimService;
-
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -50,6 +48,13 @@ public class ClaimController {
     @PreAuthorize("hasRole('ADMIN')")
     public Claim rejectClaim(@PathVariable Long id) {
         return claimService.rejectClaim(id);
+    }
+
+    // Mark a claim as returned (admin only)
+    @PatchMapping("/{id}/return")
+    @PreAuthorize("hasRole('ADMIN')")
+    public Claim returnClaim(@PathVariable Long id) {
+        return claimService.returnClaim(id);
     }
     // By alif
 }

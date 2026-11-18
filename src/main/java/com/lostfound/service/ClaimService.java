@@ -1,9 +1,7 @@
-
 package com.lostfound.service;
 
 import com.lostfound.entity.Claim;
 import com.lostfound.repository.ClaimRepository;
-
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -21,7 +19,6 @@ public class ClaimService {
 
     // Submit a new claim
     public Claim createClaim(Claim claim) {
-
         String code = "LF-" +
                 UUID.randomUUID()
                 .toString()
@@ -60,6 +57,18 @@ public class ClaimService {
                 .orElseThrow(() -> new RuntimeException("Claim not found"));
         claim.setStatus("REJECTED");
         claim.setReviewedAt(LocalDateTime.now());
+        return claimRepository.save(claim);
+    }
+
+    // Mark a claim as returned (admin only)
+    public Claim returnClaim(Long id) {
+        Claim claim = claimRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Claim not found"));
+        claim.setStatus("RETURNED");
+        claim.setReviewedAt(LocalDateTime.now());
+        if (claim.getItem() != null) {
+            claim.getItem().setStatus("RETURNED");
+        }
         return claimRepository.save(claim);
     }
     // By alif
