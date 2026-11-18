@@ -2,11 +2,49 @@
 package com.lostfound.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "claims")
 public class Claim {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @NotBlank(message = "Claimant name is required")
+    private String claimantName;
+
+    @NotBlank(message = "Claimant email is required")
+    @Email(message = "Invalid email format")
+    private String claimantEmail;
+
+    @NotBlank(message = "Student ID is required")
+    private String studentId;
+
+    @Column(nullable = false, unique = true)
+    @NotBlank(message = "Claim code is required")
+    private String claimCode;
+
+    @Column(nullable = false)
+    @NotBlank(message = "Status is required")
+    private String status = "PENDING";
+
+    private LocalDateTime createdAt;
+
+    private LocalDateTime reviewedAt;
+
+    // Relationship with Item
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "item_id", nullable = false)
+    @NotNull(message = "Item is required")
+    private Item item;
+
+    public Claim() {
+    }
 
     public Long getId() {
         return id;
@@ -80,34 +118,6 @@ public class Claim {
         this.item = item;
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    private String claimantName;
-
-    private String claimantEmail;
-
-    private String studentId;
-
-    @Column(nullable = false, unique = true)
-    private String claimCode;
-
-    @Column(nullable = false)
-    private String status = "PENDING";
-
-    private LocalDateTime createdAt;
-
-    private LocalDateTime reviewedAt;
-
-    // Relationship with Item
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "item_id", nullable = false)
-    private Item item;
-
-    public Claim() {
-    }
-
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();
@@ -116,6 +126,5 @@ public class Claim {
             status = "PENDING";
         }
     }
-
-    // Getters and Setters
+    // By alif
 }

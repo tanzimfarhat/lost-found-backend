@@ -6,6 +6,7 @@ import com.lostfound.repository.ClaimRepository;
 
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -43,4 +44,23 @@ public class ClaimService {
         return claimRepository.findByClaimCode(code)
                 .orElse(null);
     }
+
+    // Approve a claim (admin only)
+    public Claim approveClaim(Long id) {
+        Claim claim = claimRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Claim not found"));
+        claim.setStatus("APPROVED");
+        claim.setReviewedAt(LocalDateTime.now());
+        return claimRepository.save(claim);
+    }
+
+    // Reject a claim (admin only)
+    public Claim rejectClaim(Long id) {
+        Claim claim = claimRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Claim not found"));
+        claim.setStatus("REJECTED");
+        claim.setReviewedAt(LocalDateTime.now());
+        return claimRepository.save(claim);
+    }
+    // By alif
 }

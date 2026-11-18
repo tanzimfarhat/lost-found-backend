@@ -2,12 +2,55 @@
 package com.lostfound.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "items")
 public class Item {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false)
+    @NotBlank(message = "Item name is required")
+    private String itemName;
+
+    private String description;
+
+    @Column(nullable = false)
+    @NotBlank(message = "Item type is required")
+    private String itemType;
+
+    @Column(nullable = false)
+    @NotNull(message = "Report date is required")
+    private LocalDate reportDate;
+
+    @Column(nullable = false)
+    @NotBlank(message = "Campus location is required")
+    private String campusLocation;
+
+    @Column(nullable = false)
+    @NotBlank(message = "Reporter name is required")
+    private String reporterName;
+
+    @Column(nullable = false)
+    @NotBlank(message = "Reporter email is required")
+    @Email(message = "Invalid email format")
+    private String reporterEmail;
+
+    @Column(nullable = false)
+    @NotBlank(message = "Status is required")
+    private String status = "OPEN";
+
+    private LocalDateTime createdAt;
+
+    public Item() {
+    }
 
     public Long getId() {
         return id;
@@ -89,38 +132,6 @@ public class Item {
         this.createdAt = createdAt;
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(nullable = false)
-    private String itemName;
-
-    private String description;
-
-    @Column(nullable = false)
-    private String itemType;
-
-    @Column(nullable = false)
-    private LocalDate reportDate;
-
-    @Column(nullable = false)
-    private String campusLocation;
-
-    @Column(nullable = false)
-    private String reporterName;
-
-    @Column(nullable = false)
-    private String reporterEmail;
-
-    @Column(nullable = false)
-    private String status = "OPEN";
-
-    private LocalDateTime createdAt;
-
-    public Item() {
-    }
-
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();
@@ -129,7 +140,5 @@ public class Item {
             status = "OPEN";
         }
     }
-
-    // Getters and setters will be generated
-    // using VS Code in the next step.
+    // By alif
 }

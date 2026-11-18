@@ -4,6 +4,7 @@ package com.lostfound.controller;
 import com.lostfound.entity.Claim;
 import com.lostfound.service.ClaimService;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,9 +32,24 @@ public class ClaimController {
         return claimService.getAllClaims();
     }
 
-    // Track a claim using its tracking 
+    // Track a claim using its tracking code
     @GetMapping("/track/{code}")
     public Claim trackClaim(@PathVariable String code) {
         return claimService.trackClaim(code);
     }
+
+    // Approve a claim (admin only)
+    @PatchMapping("/{id}/approve")
+    @PreAuthorize("hasRole('ADMIN')")
+    public Claim approveClaim(@PathVariable Long id) {
+        return claimService.approveClaim(id);
+    }
+
+    // Reject a claim (admin only)
+    @PatchMapping("/{id}/reject")
+    @PreAuthorize("hasRole('ADMIN')")
+    public Claim rejectClaim(@PathVariable Long id) {
+        return claimService.rejectClaim(id);
+    }
+    // By alif
 }

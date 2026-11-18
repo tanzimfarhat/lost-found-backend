@@ -4,9 +4,11 @@ package com.lostfound.controller;
 import com.lostfound.entity.Item;
 import com.lostfound.service.ItemService;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/items")
@@ -36,4 +38,12 @@ public class ItemController {
     public Item getItemById(@PathVariable Long id) {
         return itemService.getItemById(id);
     }
+
+    // Update item status (admin only) - e.g., OPEN -> RETURNED
+    @PatchMapping("/{id}/status")
+    @PreAuthorize("hasRole('ADMIN')")
+    public Item updateItemStatus(@PathVariable Long id, @RequestBody Map<String, String> body) {
+        return itemService.updateItemStatus(id, body.get("status"));
+    }
+    // By alif
 }

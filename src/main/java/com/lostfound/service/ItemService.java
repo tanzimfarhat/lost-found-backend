@@ -32,4 +32,13 @@ public class ItemService {
         return itemRepository.findById(id)
                 .orElse(null);
     }
+
+    // Update item status (e.g., OPEN -> RETURNED)
+    public Item updateItemStatus(Long id, String status) {
+        Item item = itemRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Item not found"));
+        item.setStatus(status);
+        return itemRepository.save(item);
+    }
+    // By alif
 }
